@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Alimentación — Tomas · Noviembre</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080c10;--surface:#0d1117;--card:#111820;--border:#1c2530;--border2:#243040;
+  --accent:#00e5ff;--accent2:#ff6b35;--accent3:#a8ff3e;
+  --text:#d8e4f0;--muted:#4a6070;--muted2:#6a8090;--white:#f0f8ff;
+}
+body{background:var(--bg);color:var(--text);font-family:'Instrument Sans',sans-serif;font-size:14px;line-height:1.6;min-height:100vh}
+
+.hero{padding:48px 28px 36px;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 600px 300px at 80% 50%,rgba(0,229,255,.05) 0%,transparent 70%),radial-gradient(ellipse 400px 400px at 10% 80%,rgba(255,107,53,.04) 0%,transparent 70%);pointer-events:none}
+.hero-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:10px}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(52px,12vw,90px);font-weight:900;line-height:.9;color:var(--white);text-transform:uppercase;letter-spacing:-1px}
+.hero h1 em{font-style:normal;color:transparent;-webkit-text-stroke:1.5px var(--accent)}
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.pill{background:var(--card);border:1px solid var(--border2);border-radius:100px;padding:5px 14px;font-size:11px;color:var(--muted2)}
+.pill strong{color:var(--text)}
+
+.section{padding:24px 28px;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none;padding-bottom:48px}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+
+.macro-bar-wrap{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+@media(min-width:500px){.macro-bar-wrap{grid-template-columns:repeat(4,1fr)}}
+.macro-box{background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:16px 14px;text-align:center}
+.macro-val{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:900;color:var(--accent);line-height:1}
+.macro-val.orange{color:var(--accent2)}
+.macro-val.green{color:var(--accent3)}
+.macro-val.white{color:var(--white)}
+.macro-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-top:4px}
+.macro-sub{font-size:11px;color:var(--text);margin-top:5px}
+
+.meals{display:flex;flex-direction:column;gap:12px}
+.meal-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.meal-header{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;transition:background .15s}
+.meal-header:hover{background:rgba(255,255,255,.02)}
+.meal-time-badge{background:var(--border2);border-radius:6px;padding:6px 10px;text-align:center;flex-shrink:0;min-width:62px}
+.meal-time-badge .mt{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--white);line-height:1.1}
+.meal-time-badge .ml{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.meal-info{flex:1}
+.meal-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--white)}
+.meal-sub{font-size:11px;color:var(--muted2);margin-top:3px}
+.meal-chevron{color:var(--muted);transition:transform .3s;font-size:14px}
+.meal-card.open .meal-chevron{transform:rotate(180deg)}
+.meal-body{display:none;padding:0 18px 18px}
+.meal-card.open .meal-body{display:block}
+
+.option-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px}
+.option-block:last-child{margin-bottom:0}
+.opt-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.opt-label.b{color:var(--accent2)}
+.opt-label.c{color:var(--accent3)}
+.food-list{list-style:none}
+.food-list li{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03);font-size:13px;gap:8px}
+.food-list li:last-child{border-bottom:none}
+.fn{color:var(--text);flex:1}
+.fq{color:var(--muted2);font-size:11px;white-space:nowrap}
+.fk{color:var(--accent);font-size:11px;font-weight:600;white-space:nowrap}
+.alt{color:var(--muted2);font-size:11px}
+.opt-macros{display:flex;gap:12px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap}
+.opt-macro{font-size:11px;color:var(--muted2)}
+.opt-macro strong{color:var(--text)}
+
+.tip-strip{background:rgba(0,229,255,.05);border-left:3px solid var(--accent);border-radius:0 6px 6px 0;padding:10px 14px;font-size:12px;color:var(--muted2);margin-top:12px}
+.tip-strip strong{color:var(--accent)}
+.tip-strip.orange{background:rgba(255,107,53,.05);border-left-color:var(--accent2)}
+.tip-strip.orange strong{color:var(--accent2)}
+.tip-strip.green{background:rgba(168,255,62,.05);border-left-color:var(--accent3)}
+.tip-strip.green strong{color:var(--accent3)}
+
+.highlight-box{background:rgba(168,255,62,.05);border:1px solid rgba(168,255,62,.2);border-radius:8px;padding:14px 16px;font-size:13px;color:var(--text);margin-bottom:16px;line-height:1.7}
+.highlight-box strong{color:var(--accent3)}
+
+.rules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.rule-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+.rule-ico{font-size:20px;flex-shrink:0}
+.rule-card h4{font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px}
+.rule-card p{font-size:12px;color:var(--muted2);line-height:1.5}
+
+.supp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.supp-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;gap:10px;align-items:flex-start}
+.supp-icon{font-size:20px;flex-shrink:0}
+.supp-card h4{font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px}
+.supp-card p{font-size:11px;color:var(--muted2);line-height:1.5}
+.supp-dose{display:inline-block;background:rgba(168,255,62,.1);color:var(--accent3);border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700;margin-top:4px}
+
+.free-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media(min-width:480px){.free-grid{grid-template-columns:repeat(3,1fr)}}
+.free-item{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+.free-item strong{color:var(--text);display:block;font-size:12px;margin-bottom:2px}
+.free-item span{color:var(--muted2);font-size:11px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-label">Plan Nutricional — Noviembre</div>
+  <h1>PLAN<br><em>TOMAS</em></h1>
+  <div class="hero-pills">
+    <div class="pill">Objetivo <strong>perder grasa · mantener músculo</strong></div>
+    <div class="pill">Agua <strong>2–2.5 L / día</strong></div>
+    <div class="pill">Verduras <strong>libres</strong></div>
+    <div class="pill">Prioridad <strong>fuerza</strong></div>
+  </div>
+</div>
+
+<!-- MACROS -->
+<div class="section">
+  <div class="section-title">Macros del día — estimados</div>
+  <div class="highlight-box">
+    <strong>Déficit con proteína alta.</strong> El plan ronda las <strong>~1.650 kcal</strong> con mucha proteína para sostener el músculo mientras bajás grasa. Los valores son aproximados y varían según la variante que elijas (con o sin leche proteica, galletas o banana en el pre).
+  </div>
+  <div class="macro-bar-wrap">
+    <div class="macro-box"><div class="macro-val white">~1.650</div><div class="macro-lbl">kcal diarias</div><div class="macro-sub">Déficit para bajar grasa</div></div>
+    <div class="macro-box"><div class="macro-val">~175g</div><div class="macro-lbl">Proteína</div><div class="macro-sub">~700 kcal · preserva músculo</div></div>
+    <div class="macro-box"><div class="macro-val orange">~120g</div><div class="macro-lbl">Carbohidratos</div><div class="macro-sub">~480 kcal · energía para entrenar</div></div>
+    <div class="macro-box"><div class="macro-val green">~50g</div><div class="macro-lbl">Grasas</div><div class="macro-sub">~450 kcal · hormonas</div></div>
+  </div>
+</div>
+
+<!-- COMIDAS -->
+<div class="section">
+  <div class="section-title">Plan de comidas</div>
+  <div class="meals">
+
+    <div class="meal-card open">
+      <div class="meal-header" onclick="this.parentElement.classList.toggle('open')">
+        <div class="meal-time-badge"><div class="mt">1</div><div class="ml">Comida</div></div>
+        <div class="meal-info">
+          <div class="meal-name">Primera comida</div>
+          <div class="meal-sub">Proteína + grasa buena + hidrato · ~400 kcal</div>
+        </div>
+        <div class="meal-chevron">▾</div>
+      </div>
+      <div class="meal-body">
+        <div class="option-block">
+          <div class="opt-label">PLAN</div>
+          <ul class="food-list">
+            <li><span class="fn">Huevos enteros</span><span class="fq">2 unidades</span><span class="fk">~140 kcal</span></li>
+            <li><span class="fn">Claras</span><span class="fq">4 claras</span><span class="fk">~68 kcal</span></li>
+            <li><span class="fn">Palta</span><span class="fq">1/3</span><span class="fk">~80 kcal</span></li>
+            <li><span class="fn">Galletas de arroz</span><span class="fq">4 unidades</span><span class="fk">~110 kcal</span></li>
+          </ul>
+          <div class="opt-macros">
+            <div class="opt-macro">Proteína <strong>~29g</strong></div>
+            <div class="opt-macro">Carbos <strong>~29g</strong></div>
+            <div class="opt-macro">Grasas <strong>~18g</strong></div>
+            <div class="opt-macro">Total <strong>~400 kcal</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-header" onclick="this.parentElement.classList.toggle('open')">
+        <div class="meal-time-badge"><div class="mt">2</div><div class="ml">Pre entreno</div></div>
+        <div class="meal-info">
+          <div class="meal-name">Pre entreno</div>
+          <div class="meal-sub">Carbo antes de entrenar · ~320–370 kcal</div>
+        </div>
+        <div class="meal-chevron">▾</div>
+      </div>
+      <div class="meal-body">
+        <div class="option-block">
+          <div class="opt-label">OPCIÓN 1 — Con galletas</div>
+          <ul class="food-list">
+            <li><span class="fn">Huevos enteros</span><span class="fq">2 unidades</span><span class="fk">~140 kcal</span></li>
+            <li><span class="fn">Claras</span><span class="fq">4 claras</span><span class="fk">~68 kcal</span></li>
+            <li><span class="fn">Galletas de arroz</span><span class="fq">4 unidades</span><span class="fk">~110 kcal</span></li>
+          </ul>
+          <div class="opt-macros">
+            <div class="opt-macro">Proteína <strong>~28g</strong></div>
+            <div class="opt-macro">Carbos <strong>~25g</strong></div>
+            <div class="opt-macro">Grasas <strong>~11g</strong></div>
+            <div class="opt-macro">Total <strong>~320 kcal</strong></div>
+          </div>
+        </div>
+        <div class="option-block">
+          <div class="opt-label b">OPCIÓN 2 — Con banana</div>
+          <ul class="food-list">
+            <li><span class="fn">Huevos enteros</span><span class="fq">2 unidades</span><span class="fk">~140 kcal</span></li>
+            <li><span class="fn">Claras</span><span class="fq">4 claras</span><span class="fk">~68 kcal</span></li>
+            <li><span class="fn">Galletas de arroz</span><span class="fq">2 unidades</span><span class="fk">~55 kcal</span></li>
+            <li><span class="fn">Banana</span><span class="fq">1 unidad</span><span class="fk">~105 kcal</span></li>
+          </ul>
+          <div class="opt-macros">
+            <div class="opt-macro">Proteína <strong>~27g</strong></div>
+            <div class="opt-macro">Carbos <strong>~40g</strong></div>
+            <div class="opt-macro">Grasas <strong>~10g</strong></div>
+            <div class="opt-macro">Total <strong>~370 kcal</strong></div>
+          </div>
+        </div>
+        <div class="tip-strip green"><strong>Antes de entrenar:</strong> siempre carbo. Es el combustible para rendir en la fuerza.</div>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-header" onclick="this.parentElement.classList.toggle('open')">
+        <div class="meal-time-badge"><div class="mt">3</div><div class="ml">Post entreno</div></div>
+        <div class="meal-info">
+          <div class="meal-name">Post entreno</div>
+          <div class="meal-sub">Proteína + carbo · ~255–355 kcal</div>
+        </div>
+        <div class="meal-chevron">▾</div>
+      </div>
+      <div class="meal-body">
+        <div class="option-block">
+          <div class="opt-label">PLAN</div>
+          <ul class="food-list">
+            <li><span class="fn">Scoop de proteína</span><span class="fq">1 scoop</span><span class="fk">~120 kcal</span></li>
+            <li><span class="fn">Banana</span><span class="fq">1 unidad</span><span class="fk">~105 kcal</span></li>
+            <li><span class="fn">Frutos rojos</span><span class="fq">al gusto</span><span class="fk">~30 kcal</span></li>
+            <li><span class="fn">Leche proteica <span class="alt">(si no te cae mal)</span></span><span class="fq">200 ml</span><span class="fk">~100 kcal</span></li>
+          </ul>
+          <div class="opt-macros">
+            <div class="opt-macro">Proteína <strong>~25g</strong> <span class="alt">(~37g con leche)</span></div>
+            <div class="opt-macro">Carbos <strong>~37g</strong> <span class="alt">(~46g con leche)</span></div>
+            <div class="opt-macro">Total <strong>~255 kcal</strong> <span class="alt">(~355 con leche)</span></div>
+          </div>
+        </div>
+        <div class="tip-strip"><strong>Si la leche te cae mal:</strong> hacelo con agua. Queda igual de efectivo, solo baja un poco el total.</div>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-header" onclick="this.parentElement.classList.toggle('open')">
+        <div class="meal-time-badge"><div class="mt">4</div><div class="ml">Cena</div></div>
+        <div class="meal-info">
+          <div class="meal-name">Cena</div>
+          <div class="meal-sub">Proteína alta + verdura libre · ~585 kcal</div>
+        </div>
+        <div class="meal-chevron">▾</div>
+      </div>
+      <div class="meal-body">
+        <div class="option-block">
+          <div class="opt-label">PLAN</div>
+          <ul class="food-list">
+            <li><span class="fn">Pollo <span class="alt">ó</span> carne <span class="alt">ó</span> pescado</span><span class="fq">250g cocido</span><span class="fk">~410 kcal</span></li>
+            <li><span class="fn">Huevo entero</span><span class="fq">1 unidad</span><span class="fk">~70 kcal</span></li>
+            <li><span class="fn">Ensalada + calabaza</span><span class="fq">libre</span><span class="fk">~50 kcal</span></li>
+            <li><span class="fn">Galletas de arroz</span><span class="fq">2 unidades</span><span class="fk">~55 kcal</span></li>
+          </ul>
+          <div class="opt-macros">
+            <div class="opt-macro">Proteína <strong>~84g</strong></div>
+            <div class="opt-macro">Carbos <strong>~22g</strong></div>
+            <div class="opt-macro">Grasas <strong>~15g</strong></div>
+            <div class="opt-macro">Total <strong>~585 kcal</strong></div>
+          </div>
+        </div>
+        <div class="tip-strip orange"><strong>Cálculo con pollo.</strong> Si elegís carne, el total sube un poco por la grasa. Pescado blanco es la opción más liviana. Después de cenar, gelatina libre para el antojo dulce.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- INDICACIONES -->
+<div class="section">
+  <div class="section-title">Indicaciones</div>
+  <div class="highlight-box">
+    <strong>MÚSCULO = PROTEÍNA + CARBO + FUERZA.</strong> Las tres cosas juntas. Si falta una, no funciona, y menos en déficit.
+  </div>
+  <div class="rules-grid">
+    <div class="rule-card"><div class="rule-ico">🏋️</div><div><h4>Actividad física: priorizar fuerza</h4><p>El entrenamiento de fuerza es lo que le dice al cuerpo que conserve el músculo mientras baja grasa. Todo lo demás suma, pero la fuerza va primero.</p></div></div>
+    <div class="rule-card"><div class="rule-ico">⚡</div><div><h4>Antes de entrenar: carbo</h4><p>Es la comida pre entreno. Con carbo llegás con energía y rendís más en cada serie.</p></div></div>
+    <div class="rule-card"><div class="rule-ico">🔁</div><div><h4>Después de entrenar: proteína + carbo</h4><p>Ejemplo: yogur Ser Proteína, o 2 huevos + carbo. Es lo que arranca la recuperación muscular.</p></div></div>
+    <div class="rule-card"><div class="rule-ico">🍮</div><div><h4>Gelatina libre cuando quieras</h4><p>Colágeno y proteína sin calorías. Gran aliada para el antojo dulce y para sumar volumen.</p></div></div>
+    <div class="rule-card"><div class="rule-ico">🥤</div><div><h4>Jugo Clight habilitado</h4><p>No abusar. Va bien para reemplazar gaseosas y calmar el antojo de algo dulce.</p></div></div>
+    <div class="rule-card"><div class="rule-ico">🧂</div><div><h4>Condimentos</h4><p>Mostaza, ketchup, vinagre, limón y condimentos van bien. Dan sabor sin sumar calorías relevantes.</p></div></div>
+    <div class="rule-card"><div class="rule-ico">💧</div><div><h4>Un vaso de agua con cada comida</h4><p>Ideal llegar a 2 o 2,5 litros por día. Ayuda a la saciedad, al rendimiento y a la recuperación.</p></div></div>
+    <div class="rule-card"><div class="rule-ico">🧂</div><div><h4>Sal marina o himalaya</h4><p>Comprala en cualquier dietética, es barata. Reemplaza a la sal común.</p></div></div>
+    <div class="rule-card"><div class="rule-ico">🍫</div><div><h4>Si hay antojo</h4><p>Proteína, helado de proteína, gelatina, frutos rojos, o 2 sobres de edulcorante con un vaso de agua. Cualquiera de las cinco antes que improvisar algo peor.</p></div></div>
+  </div>
+</div>
+
+<!-- LIBRE -->
+<div class="section">
+  <div class="section-title">Libre — para bajar de peso</div>
+  <div class="free-grid">
+    <div class="free-item"><strong>🥗 Verduras</strong><span>Ensalada, tomate, pepino, brócoli, espinaca, calabaza. Sin límite.</span></div>
+    <div class="free-item"><strong>🍮 Gelatina</strong><span>Colágeno + proteína, cero calorías.</span></div>
+    <div class="free-item"><strong>🫐 Frutos rojos</strong><span>Antioxidantes, saciedad y poco calórico.</span></div>
+    <div class="free-item"><strong>🌿 Condimentos</strong><span>Mostaza, ketchup, vinagre, limón, especias.</span></div>
+    <div class="free-item"><strong>💧 Agua</strong><span>2 a 2,5 L por día. Un vaso con cada comida.</span></div>
+    <div class="free-item"><strong>☕ Infusiones</strong><span>Té, mate cocido, café negro. Sin azúcar.</span></div>
+  </div>
+  <div class="tip-strip"><strong>Las verduras son tu mejor herramienta:</strong> llenan, aportan fibra y casi no suman calorías. Si te quedás con hambre, la respuesta es más verdura, no menos proteína.</div>
+</div>
+
+<!-- SUPLEMENTOS -->
+<div class="section">
+  <div class="section-title">Suplementos</div>
+  <div class="supp-grid">
+    <div class="supp-card"><div class="supp-icon">⚡</div><div><h4>Creatina</h4><p>Mejora la fuerza y ayuda a conservar músculo en déficit. Tomala todos los días, también los de descanso.</p><div class="supp-dose">5 g · diario</div></div></div>
+    <div class="supp-card"><div class="supp-icon">🌙</div><div><h4>Bisglicinato de magnesio</h4><p>Apoya la recuperación y el descanso. Suele funcionar bien a la noche.</p><div class="supp-dose">3 g · diario</div></div></div>
+    <div class="supp-card"><div class="supp-icon">🍊</div><div><h4>Vitamina C</h4><p>Antioxidante, apoya el sistema inmune y la recuperación.</p><div class="supp-dose">2 g · diario</div></div></div>
+    <div class="supp-card"><div class="supp-icon">🌱</div><div><h4>Maca negra</h4><p>Suplemento de apoyo para energía y rendimiento.</p><div class="supp-dose">3 g · diario</div></div></div>
+    <div class="supp-card"><div class="supp-icon">☀️</div><div><h4>Vitamina D</h4><p>Va mejor con una comida que tenga grasa, por ejemplo la primera.</p><div class="supp-dose">5000 UI · 1 cápsula por día</div></div></div>
+  </div>
+</div>
+
+</body>
+</html>
